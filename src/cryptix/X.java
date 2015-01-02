@@ -1,7 +1,5 @@
 package cryptix;
 
-import webfunds.util.Hex;
-import webfunds.util.Panic;
 
 
 /**
@@ -16,6 +14,13 @@ import webfunds.util.Panic;
  */
 public class X
 {
+    public static void debug(String s)     { }
+    public static void info (String s)     { }
+    public static void warn (String s)     { }
+    public static void error(String s)     { }
+    
+    
+    
     /**
      * Constant Time Equality of two byte arrays.
      * 
@@ -203,7 +208,7 @@ public class X
          * Let's run with this and see how bad it is.
          */
         if (0 == popn || (8*length) == popn)
-            throw new Panic("popn6482 " + popn + "/" + length);
+            throw new RuntimeException("popn6482 " + popn + "/" + length);
     }
 
     /**
@@ -230,7 +235,7 @@ public class X
          * Let's run with this and see how bad it is.
          */
         if ( ! (3 * length <= popn || popn <= 5 * length))
-            throw new Panic("popn1057 " + popn + "/" + length + " " + Hex.quick(b));
+            throw new RuntimeException("popn1057 " + popn + "/" + length + " " + X.quick(b));
     }
 
     
