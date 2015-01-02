@@ -1,8 +1,8 @@
 package cryptix.AdazPRNG;
 
 import java.security.SecureRandom;
+import cryptix.X;
 
-import webfunds.util.log.Logger;
 
 
 /**
@@ -20,8 +20,6 @@ public class CollectorJavaRandom
     extends CollectorAbstract
     implements CollectorInterface
 {
-    private static final Logger log =  Logger.getInstance("oldJavaSR");
-
     /**
      * <p>
      * NB: this is a very old note, probably out of date:
@@ -37,12 +35,12 @@ public class CollectorJavaRandom
     private static SecureRandom getNewSecureRandom()
     {
         long tim = System.nanoTime();
-        log.info("Random.getSecureRandom: Init secureRandom ..." +
+        X.info("Random.getSecureRandom: Init secureRandom ..." +
                 " this could take some time.");
         // should this be syncronised?  Probably doesn't matter.
         SecureRandom sr = new SecureRandom();
         long delay = System.nanoTime() - tim;
-        log.info("Finished init securerandom -- " + delay + "ns.");
+        X.info("Finished init securerandom -- " + delay + "ns.");
         return sr;
     }
     

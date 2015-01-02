@@ -1,7 +1,7 @@
 package cryptix.AdazPRNG;
 
 import cryptix.X;
-import webfunds.util.Statistics;
+import cryptix.util.Statistics;
 
 
 

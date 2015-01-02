@@ -3,7 +3,7 @@ package cryptix.AdazPRNG;
 import java.io.FileNotFoundException;
 
 import cryptix.X;
-import webfunds.util.Statistics;
+import cryptix.util.Statistics;
 
 
 /**
