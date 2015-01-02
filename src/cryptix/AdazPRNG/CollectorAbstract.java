@@ -1,4 +1,4 @@
-package AdazPRNG;
+package cryptix.AdazPRNG;
 
 import cryptix.X;
 import webfunds.util.Statistics;

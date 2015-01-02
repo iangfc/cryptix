@@ -1,4 +1,4 @@
-package alg;
+package cryptix.alg;
 import cryptix.Digest;
 
 /**

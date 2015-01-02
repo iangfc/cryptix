@@ -1,7 +1,7 @@
-package AdazPRNG;
+package cryptix.AdazPRNG;
 
 import cryptix.Digest;
-import alg.SHA512Digest;
+import cryptix.alg.SHA512Digest;
 
 
 

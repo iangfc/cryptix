@@ -1,9 +1,9 @@
-package AdazPRNG;
+package cryptix.AdazPRNG;
 
 import java.math.BigInteger;
 
 import cryptix.X;
-import alg.chacha.ChaCha;
+import cryptix.alg.chacha.ChaCha;
 
 /**
  * TODO: This should be fixed up to export from ChaCha.

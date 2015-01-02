@@ -1,11 +1,11 @@
-package AdazPRNG;
+package cryptix.AdazPRNG;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
 import cryptix.Digest;
-import alg.SHA512Digest;
 import cryptix.X;
+import cryptix.alg.SHA512Digest;
 
 /**
  * @see {#link package-info} for Design Logic.

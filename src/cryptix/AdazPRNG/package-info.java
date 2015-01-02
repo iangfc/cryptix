@@ -5,4 +5,4 @@
  * @author ada
  *
  */
-package AdazPRNG;
+package cryptix.AdazPRNG;

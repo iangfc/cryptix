@@ -1,4 +1,4 @@
-package AdazPRNG;
+package cryptix.AdazPRNG;
 
 import java.io.File;
 import java.io.FileInputStream;
