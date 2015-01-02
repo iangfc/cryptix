@@ -2,7 +2,7 @@ package cryptix.alg;
 import cryptix.Digest;
 
 /**
- * BouncyCastle's implemention of FIPS 180-2 SHA-512.
+ * BouncyCastle's implementation of FIPS 180-2 SHA-512.
  *
  * <pre>
  *         block  word  digest
