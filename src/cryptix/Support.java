@@ -1,4 +1,4 @@
-package cryptix.AdazPRNG;
+package cryptix;
 
 import java.util.Random;
 
@@ -17,7 +17,7 @@ public class Support
     static Random r = new Random( System.currentTimeMillis() );
     
     /** @return example int, between min and max (inclusive) */
-    static int exampleInt(int min, int max)
+    public static int exampleInt(int min, int max)
     {
         if (min == max)
             return min;

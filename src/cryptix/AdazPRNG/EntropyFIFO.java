@@ -3,6 +3,7 @@ package cryptix.AdazPRNG;
 import java.io.Closeable;
 import java.util.Arrays;
 
+import cryptix.Support;
 import cryptix.X;
 
 /**

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import cryptix.Digest;
+import cryptix.Support;
 import cryptix.X;
 import cryptix.alg.SHA512Digest;
 

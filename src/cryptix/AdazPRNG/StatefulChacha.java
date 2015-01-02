@@ -2,6 +2,7 @@ package cryptix.AdazPRNG;
 
 import java.math.BigInteger;
 
+import cryptix.Support;
 import cryptix.X;
 import cryptix.alg.chacha.ChaCha;
 
