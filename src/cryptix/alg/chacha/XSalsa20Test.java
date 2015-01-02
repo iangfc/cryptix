@@ -2,11 +2,10 @@ package cryptix.alg.chacha;
 
 
 import cryptix.X;
-import webfunds.util.Hex;
-import webfunds.util.Panic;
+
 /**
  * Test to push Crypto++ test vectors through XSalsa20.
- * @author ada
+ * @author AdaLovelace561
  *
  */
 public class XSalsa20Test
@@ -39,7 +38,7 @@ public class XSalsa20Test
 	            if (verbose >= 3) {
 	                System.err.print(v[0] + ((verbose == 2) ? "" : ":\n"));
 	            } else {
-	                out += i + ": " + Hex.quick(Hex.hex2data(v[1]));
+	                out += i + ": " + X.quick(X.hex2data(v[1]));
 	            }
 	            
 	            long startCycle = System.nanoTime();
@@ -65,10 +64,10 @@ public class XSalsa20Test
 	  //pt == vector[3]
 		private static String selfTest1(String[] vector) {
 			String s = "";
-			byte[] key        = Hex.hex2data(vector[1]);
-			byte[] iv         = Hex.hex2data(vector[2]);
-			byte[] pt    	  = Hex.hex2data(vector[3]);   
-			byte[] ct  		  = Hex.hex2data(vector[4]);
+			byte[] key        = X.hex2data(vector[1]);
+			byte[] iv         = X.hex2data(vector[2]);
+			byte[] pt    	  = X.hex2data(vector[3]);   
+			byte[] ct  		  = X.hex2data(vector[4]);
 			if (verbose >= 4) System.err.println(" ");
 
 			/*
@@ -86,15 +85,15 @@ public class XSalsa20Test
 	         *    http://www.ecrypt.eu.org/stream/svn/viewcvs.cgi/ecrypt/trunk/submissions/XSalsa20/full/verified.test-vectors?rev=161&view=markup
 		     */
 			
-			s += "key : " + Hex.data2hex(key) + "\n";
-			s += "iv  : " + Hex.data2hex(iv) + "\n";
-			s += "pt  : " + Hex.data2hex(pt)+" len "+pt.length+"\n\n";
+			s += "key : " + X.data2hex(key) + "\n";
+			s += "iv  : " + X.data2hex(iv) + "\n";
+			s += "pt  : " + X.data2hex(pt)+" len "+pt.length+"\n\n";
 			if (verbose >= 4) System.err.println("s\n" + s);
 			
 	        byte[] ciphertext = new byte[pt.length];  // output stream of 512 encrypted bytes
 			
 			Xsalsa20.crypto_stream_xor(ciphertext, pt, pt.length, iv, key);
-			s += "ct  : " +"\n\t" +Hex.data2hex(ciphertext) + "\n\t"+ Hex.data2hex(ciphertext) +"\n";
+			s += "ct  : " +"\n\t" +X.data2hex(ciphertext) + "\n\t"+ X.data2hex(ciphertext) +"\n";
 			
 			/*
 			 * Within the ECRYPT Stream test vector are 4 snippets
@@ -103,16 +102,16 @@ public class XSalsa20Test
 			 */
 			//Equals.setNoisy();
 			if(!X.ctEquals(ct, ciphertext))
-				throw new Panic("ciphertexts are not equal: "+ "\n\t [" + ciphertext.length + "] " +Hex.data2hex(ciphertext) + "\n\t [" + ct.length + "] "+ Hex.data2hex(ct) +"\n");
+				throw new RuntimeException("ciphertexts are not equal: "+ "\n\t [" + ciphertext.length + "] " +X.data2hex(ciphertext) + "\n\t [" + ct.length + "] "+ X.data2hex(ct) +"\n");
 	        
 	        
 	        
 	        byte[] decrypted = new byte[pt.length];
 	        Xsalsa20.crypto_stream_xor(decrypted, ciphertext, ciphertext.length, iv, key);
-	        s += "decr: " + Hex.data2hex(decrypted) + "\n";
+	        s += "decr: " + X.data2hex(decrypted) + "\n";
 	        
 	        if (!X.ctEquals(decrypted, pt)) 
-	            throw new Panic("plaintexts are not equal: "+ "\n\t" +Hex.data2hex(pt) + "\n\t"+ Hex.data2hex(decrypted) +"\n");
+	            throw new RuntimeException("plaintexts are not equal: "+ "\n\t" +X.data2hex(pt) + "\n\t"+ X.data2hex(decrypted) +"\n");
 	       
 	        if (verbose >= 3) System.err.println("IT WORKED!!!!");
 	        if (verbose >= 4) {
@@ -124,13 +123,13 @@ public class XSalsa20Test
 	    //pt == new byte[vector[3]]
 		private static String selfTest0(String[] vector) {
 			String s = "";
-			byte[] key        = Hex.hex2data(vector[1]);
-			byte[] iv         = Hex.hex2data(vector[2]);
+			byte[] key        = X.hex2data(vector[1]);
+			byte[] iv         = X.hex2data(vector[2]);
 			if (verbose >= 4) System.err.println("\nThis is our vector 3: "+ vector[3]);
 			int i = Integer.parseInt(vector[3]);
 			if (verbose >= 4) System.err.println("This is our pt len: "+ i);
 			byte[] pt    	  = new byte[i];   
-			byte[] ct  		  = Hex.hex2data(vector[4]);
+			byte[] ct  		  = X.hex2data(vector[4]);
 			if (verbose >= 4) System.err.println(" ");
 
 			/*
@@ -148,15 +147,15 @@ public class XSalsa20Test
 	         *    http://www.ecrypt.eu.org/stream/svn/viewcvs.cgi/ecrypt/trunk/submissions/XSalsa20/full/verified.test-vectors?rev=161&view=markup
 		     */
 			
-			s += "key : " + Hex.data2hex(key) + "\n";
-			s += "iv  : " + Hex.data2hex(iv) + "\n";
-			s += "pt  : " + Hex.data2hex(pt)+" len "+pt.length+"\n\n";
+			s += "key : " + X.data2hex(key) + "\n";
+			s += "iv  : " + X.data2hex(iv) + "\n";
+			s += "pt  : " + X.data2hex(pt)+" len "+pt.length+"\n\n";
 			if (verbose >= 4) System.err.println("s\n" + s);
 			
 	        byte[] ciphertext = new byte[pt.length];  // output stream of 512 encrypted bytes
 			
 			Xsalsa20.crypto_stream_xor(ciphertext, pt, pt.length, iv, key);
-			s += "ct  : " +"\n\t" +Hex.data2hex(ciphertext) + "\n\t"+ Hex.data2hex(ciphertext) +"\n";
+			s += "ct  : " +"\n\t" +X.data2hex(ciphertext) + "\n\t"+ X.data2hex(ciphertext) +"\n";
 			
 			/*
 			 * Within the ECRYPT Stream test vector are 4 snippets
@@ -165,16 +164,16 @@ public class XSalsa20Test
 			 */
 			//Equals.setNoisy();
 			if(!X.ctEquals(ct, ciphertext))
-				throw new Panic("ciphertexts are not equal: "+ "\n\t [" + ciphertext.length + "] " +Hex.data2hex(ciphertext) + "\n\t [" + ct.length + "] "+ Hex.data2hex(ct) +"\n");
+				throw new RuntimeException("ciphertexts are not equal: "+ "\n\t [" + ciphertext.length + "] " +X.data2hex(ciphertext) + "\n\t [" + ct.length + "] "+ X.data2hex(ct) +"\n");
 	        
 	        
 	        
 	        byte[] decrypted = new byte[pt.length];
 	        Xsalsa20.crypto_stream_xor(decrypted, ciphertext, ciphertext.length, iv, key);
-	        s += "decr: " + Hex.data2hex(decrypted) + "\n";
+	        s += "decr: " + X.data2hex(decrypted) + "\n";
 	        
 	        if (!X.ctEquals(decrypted, pt)) 
-	            throw new Panic("plaintexts are not equal: "+ "\n\t" +Hex.data2hex(pt) + "\n\t"+ Hex.data2hex(decrypted) +"\n");
+	            throw new RuntimeException("plaintexts are not equal: "+ "\n\t" +X.data2hex(pt) + "\n\t"+ X.data2hex(decrypted) +"\n");
 	       
 	        if (verbose >= 3) System.err.println("IT WORKED!!!!");
 	        if (verbose >= 4) {
@@ -220,11 +219,11 @@ public class XSalsa20Test
 //
 //	        int len = snippet.length;
 //	        if (! X.ctEquals(len, c, pos, snippet, 0)) {
-//	            String s = "snip: " + gapx2(pos) + Hex.data2hex(snippet) + "\n";
+//	            String s = "snip: " + gapx2(pos) + X.data2hex(snippet) + "\n";
 //	            return "Stream " + pos + " failed:\n" + s;
 //	        }
 //	        if (verbose >= 4)
-//	            System.err.println("snip: " + gapx2(pos) + Hex.data2hex(snippet));
+//	            System.err.println("snip: " + gapx2(pos) + X.data2hex(snippet));
 //	        return "";
 //		}
 //		

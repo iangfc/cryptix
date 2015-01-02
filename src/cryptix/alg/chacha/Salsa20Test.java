@@ -1,8 +1,6 @@
 package cryptix.alg.chacha;
 
-import cryptix.crypto.X;
-import webfunds.util.Hex;
-import webfunds.util.Panic;
+import cryptix.X;
 
 
 
@@ -61,13 +59,13 @@ public class Salsa20Test
 	private static void selfTest(String[] vector) {
 		String s = "";
 
-		byte[] key        = Hex.hex2data(vector[1]);     // byte[256 / 8];
-		byte[] iv         = Hex.hex2data(vector[2]);     // byte[64  / 8];
-		byte[] stream0    = Hex.hex2data(vector[3]);     // byte[512 / 8] ..
-		byte[] stream192  = Hex.hex2data(vector[4]);
-		byte[] stream256  = Hex.hex2data(vector[5]);
-		byte[] stream448  = Hex.hex2data(vector[6]);
-		byte[] xor_digest = Hex.hex2data(vector[7]);  // byte[512/8]
+		byte[] key        = X.hex2data(vector[1]);     // byte[256 / 8];
+		byte[] iv         = X.hex2data(vector[2]);     // byte[64  / 8];
+		byte[] stream0    = X.hex2data(vector[3]);     // byte[512 / 8] ..
+		byte[] stream192  = X.hex2data(vector[4]);
+		byte[] stream256  = X.hex2data(vector[5]);
+		byte[] stream448  = X.hex2data(vector[6]);
+		byte[] xor_digest = X.hex2data(vector[7]);  // byte[512/8]
 		
 		/*
 	     * How to use xor-digest
@@ -84,16 +82,16 @@ public class Salsa20Test
          *    http://www.ecrypt.eu.org/stream/svn/viewcvs.cgi/ecrypt/trunk/submissions/salsa20/full/verified.test-vectors?rev=161&view=markup
 	     */
 		
-		s += "key : " + Hex.data2hex(key) + "\n";
-		s += "iv  : " + Hex.data2hex(iv) + "\n\n";
+		s += "key : " + X.data2hex(key) + "\n";
+		s += "iv  : " + X.data2hex(iv) + "\n\n";
 		
 		byte[] message    = new byte[512];  // input stream of 512 zero bytes
         byte[] ciphertext = new byte[512];  // output stream of 512 encrypted bytes
 		
                                 //output,     input,   length of input
-        s += "mesg: " + Hex.data2hex(message) + "\n";
+        s += "mesg: " + X.data2hex(message) + "\n";
 		MySalsa20.crypto_stream_xor(ciphertext, message, message.length, iv, 0, key);
-		s += "ciph: " + Hex.data2hex(ciphertext) + "\n";
+		s += "ciph: " + X.data2hex(ciphertext) + "\n";
 		
 		/*
 		 * Within the ECRYPT Stream test vector are 4 snippets
@@ -111,14 +109,14 @@ public class Salsa20Test
 		// force an error to check comparisons: stream448[3] = 'x';
         result += testAgainstECRYPTTestVector(ciphertext, 448, stream448);
         if (result.length() > 0)     // oops!
-            throw new Panic(s + result);
+            throw new RuntimeException(s + result);
         
         byte[] decrypted = new byte[512];
         MySalsa20.crypto_stream_xor(decrypted, ciphertext, ciphertext.length, iv, 0, key);
-        s += "decr: " + Hex.data2hex(decrypted) + "\n";
+        s += "decr: " + X.data2hex(decrypted) + "\n";
         if (! X.ctEquals(decrypted, message)) {
             s += "decrypt phase did not return all empty input:";
-            throw new Panic(s);
+            throw new RuntimeException(s);
             //return s;
         }
         
@@ -130,9 +128,9 @@ public class Salsa20Test
         
         if(!X.ctEquals(xor_digest, ct_digest)) {
             System.err.println(s);
-        	throw new Panic("The digests don't match!!!!!!" +
-        			"\ntheirs " + Hex.data2hex(xor_digest)+
-        			"\nmine   " + Hex.data2hex(ct_digest));
+        	throw new RuntimeException("The digests don't match!!!!!!" +
+        			"\ntheirs " + X.data2hex(xor_digest)+
+        			"\nmine   " + X.data2hex(ct_digest));
         }
         
 		return ;
@@ -192,11 +190,11 @@ public class Salsa20Test
 
         int len = snippet.length;
         if (! X.ctEquals(c, pos, snippet, 0, len)) {
-            String s = "snip: " + gapx2(pos) + Hex.data2hex(snippet) + "\n";
+            String s = "snip: " + gapx2(pos) + X.data2hex(snippet) + "\n";
             return "Stream " + pos + " failed:\n" + s;
         }
         if (verbose >= 4)
-            System.err.println("snip: " + gapx2(pos) + Hex.data2hex(snippet));
+            System.err.println("snip: " + gapx2(pos) + X.data2hex(snippet));
         return "";
 	}
 	

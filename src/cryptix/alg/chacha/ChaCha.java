@@ -1,11 +1,8 @@
-package cryptix.alg.chacha;;
+package cryptix.alg.chacha;
  
 
-import webfunds.sox.crypto.CryptorAbstract;
+import cryptix.Support;
 import cryptix.X;
-import webfunds.util.Example;
-import webfunds.util.Hex;
-import webfunds.util.Panic;
 
 /**
  * <p>
@@ -133,11 +130,10 @@ import webfunds.util.Panic;
  *      says that ChaCha20 is usually around 15% more
  *      efficient than Salsa20 on modern Intel CPUs.</li>
  * </ul>
- * @author ada
+ * @author AdaLovelace561
  * @see ChaChaVectors.java, MySalsa.java
  */
 public class ChaCha
-    extends CryptorAbstract
     // MySalsa extends from this class (as ChaCha is the recommended one)
 {
 
@@ -319,11 +315,11 @@ public class ChaCha
     public static int[][] get_context(byte[] iv, byte[] blockcounter, byte[] key)
     {
         if (key.length != SMALL_KEY_LENGTH && key.length != KEY_LENGTH)
-            throw new Panic("key length must be 16/128bits or 32/256bits");
+            throw new IllegalArgumentException("key length must be 16/128bits or 32/256bits");
         if (iv.length != IV_LENGTH)
-            throw new Panic("iv/nonce length must be 16bytes");
+            throw new IllegalArgumentException("iv/nonce length must be 16bytes");
         if (blockcounter.length != BLOCKCOUNTER_LENGTH)
-            throw new Panic("iv/nonce length must be 16bytes");
+            throw new IllegalArgumentException("iv/nonce length must be 16bytes");
         
         final int keyWordLen = key.length / 4;
         
@@ -572,13 +568,13 @@ public class ChaCha
 	static int[][] add4x4(int[][]matrix0, int[][]matrix1){
 	    // should move this size checking outside inner loops.
 		if((matrix0.length != 4) ||( matrix1.length != 4))
-			throw new Panic("lengths are not equal to 4");
+			throw new RuntimeException("lengths are not equal to 4");
 
 		int[] [] matrix = new int[4][4];
 
 		for(int i = 0; i < 4; i++){
 			if((matrix0[i].length != 4) ||( matrix1[i].length != 4))
-				throw new Panic("lengths are not equal to 4");
+				throw new RuntimeException("lengths are not equal to 4");
 
 			for(int j = 0; j < 4; j++){
 				matrix[i][j] = matrix0[i][j] + matrix1[i][j];
@@ -646,10 +642,10 @@ public class ChaCha
         if (name.indexOf("(12/") >= 0)
             rounds = CHACHA12;
 
-        byte[] key       = Hex.hex2data(v[1]);
-        byte[] nonce     = Hex.hex2data(v[2]);
-        byte[] keystream = Hex.hex2data(v[3]);
-        byte[] bc = (v.length > 4) ? Hex.hex2data(v[4]) : new byte[8];
+        byte[] key       = X.hex2data(v[1]);
+        byte[] nonce     = X.hex2data(v[2]);
+        byte[] keystream = X.hex2data(v[3]);
+        byte[] bc = (v.length > 4) ? X.hex2data(v[4]) : new byte[8];
 
         int    xorlen    = keystream.length;
         byte[] returnme  = new byte[xorlen];
@@ -664,7 +660,7 @@ public class ChaCha
 
         String s = diag(name, xorlen, key, nonce, bc, keystream, returnme);
         if(!X.ctEquals(keystream, returnme)) {
-            throw new Panic("\n\n@@@@@@@@@@@@@@@@ not matched!\n" + s + "\n\n");
+            throw new RuntimeException("\n\n@@@@@@@@@@@@@@@@ not matched!\n" + s + "\n\n");
             //System.err.println("\n\n@@@@@@@@@@@@@@@@ not matched!\n" + s + "\n\n");
         } else if (verbose > 2) {
             System.err.println("  Good.");
@@ -674,7 +670,7 @@ public class ChaCha
         crypto_stream_xor( returnme2, returnme, xorlen, nonce, bc, key, rounds);
 
         if(!X.ctEquals(returnme2, xorme))
-            throw new Panic("returnme2 not equal to org!!!\n\t"+Hex.data2hex(returnme2)+"\n\t"+Hex.data2hex(xorme) +"\n\n"+s);
+            throw new RuntimeException("returnme2 not equal to org!!!\n\t"+X.data2hex(returnme2)+"\n\t"+X.data2hex(xorme) +"\n\n"+s);
     }
     
     static String diag(String[] vector)
@@ -690,11 +686,11 @@ public class ChaCha
     static String diag(String name, int len, byte[] key, byte[] nonce, byte[] bc, byte[] stream, byte[] got)
     {
         String s = "test result " + name + " len " + len +
-                "\n\tkey:    "+Hex.data2hex(key)+
-                "\n\tnonce:  "+Hex.data2hex(nonce)+
-                "\n\tbc:     "+Hex.data2hex(bc)+
-                "\n\tstream: "+Hex.data2hex(stream)+
-                "\n\tGOT:    "+Hex.data2hex(got);
+                "\n\tkey:    "+X.data2hex(key)+
+                "\n\tnonce:  "+X.data2hex(nonce)+
+                "\n\tbc:     "+X.data2hex(bc)+
+                "\n\tstream: "+X.data2hex(stream)+
+                "\n\tGOT:    "+X.data2hex(got);
         return s;
     }
     
@@ -773,20 +769,20 @@ public class ChaCha
 	
     static String testEndian(){
         for(int i = 0; i <= 1000; i++){
-            int me0 = Example.exampleInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
+            int me0 = Support.exampleInt(Integer.MIN_VALUE, Integer.MAX_VALUE);
             byte[] b =  littleendian2bytes(me0);
             int me = bytes2littleendian(b[0], b[1], b[2], b[3]);
             if(me != me0)
-                throw new Panic("from endian: " + Integer.toHexString(me)+ " bits: "+ Hex.data2hex(b));
+                throw new RuntimeException("from endian: " + Integer.toHexString(me)+ " bits: "+ X.data2hex(b));
 //          else
 //              System.err.println("from endian: " + Integer.toHexString(me)+ " bits: "+ Hex.data2hex(b));
         }
         for(int i = 0; i <= 1000; i++){
-            byte[] b  =  Example.data(4);
+            byte[] b  =  Support.exampleData(4);
             int me    = bytes2littleendian(b[0], b[1], b[2], b[3]);
             byte[] b2 = littleendian2bytes(me);
             if(! X.ctEquals(b, b2))
-                throw new Panic("to endian: " + Integer.toHexString(me)+ " bits: "+ Hex.data2hex(b));
+                throw new RuntimeException("to endian: " + Integer.toHexString(me)+ " bits: "+ X.data2hex(b));
 //          else
 //              System.err.println("to endian: " + Integer.toHexString(me)+ " bits: "+ Hex.data2hex(b));
         }
@@ -807,7 +803,7 @@ public class ChaCha
                 good = false;
         }
         if (!good)
-            throw new Panic("greeks not equal..." +
+            throw new RuntimeException("greeks not equal..." +
                 "\n    String:     " + phrase +
                 "\n    calculated: " + toString4(greek) +
                 "\n    static set: " + toString4(greekStatic));

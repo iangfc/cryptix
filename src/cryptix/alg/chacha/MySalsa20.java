@@ -1,8 +1,7 @@
 package cryptix.alg.chacha;
 
 import cryptix.X;
-import webfunds.util.Example;
-import webfunds.util.Panic;
+import cryptix.Support;
 
 
 /**
@@ -274,19 +273,19 @@ public class MySalsa20
 		int[][] matrix = testround1(testmatrix0);
 		matrix = round(matrix);
 		if(! eq4x4(matrix, testmatrixround2))
-			throw new Panic(s+"\nround2 matrices are not equal\n" + matrix2string(matrix)+"\ntestmatrixround2\n"+matrix2string(testmatrixround2));
+			throw new RuntimeException(s+"\nround2 matrices are not equal\n" + matrix2string(matrix)+"\ntestmatrixround2\n"+matrix2string(testmatrixround2));
 		s += "  Round2.";
 		
 		for(int i = 0; i <18; i++){
 			matrix = round(matrix);
 		}
 		if(! eq4x4(matrix, testmatrixround20))
-			throw new Panic(s+"\nround20 matrices are not equal\n" + matrix2string(matrix)+"\ntestmatrixround20\n"+matrix2string(testmatrixround20));
+			throw new RuntimeException(s+"\nround20 matrices are not equal\n" + matrix2string(matrix)+"\ntestmatrixround20\n"+matrix2string(testmatrixround20));
         s += "  Round20.";
         
 		matrix = salsa20(testmatrix0);
 		if(! eq4x4(matrix, finaltestmatrix20))
-			throw new Panic(s+"\nfinalround20 matrices are not equal\n" + matrix2string(matrix)+"\ntestmatrixfinal20\n"+matrix2string(finaltestmatrix20));
+			throw new RuntimeException(s+"\nfinalround20 matrices are not equal\n" + matrix2string(matrix)+"\ntestmatrixfinal20\n"+matrix2string(finaltestmatrix20));
         s += "  Final.";
         
 		s += "  " + oroborousSalsa20();
@@ -298,23 +297,23 @@ public class MySalsa20
 		int[][] matrix0 = new int[4][4];
 		matrix0 = step1(matrix);
 		if(! eq4x4(matrix0, testmatrix1))
-			throw new Panic("matrix != testmatrix1");
+			throw new RuntimeException("matrix != testmatrix1");
 
 		step2(matrix0);
 		if(! eq4x4(matrix0, testmatrix2))
-			throw new Panic("matrix != testmatrix2");
+			throw new RuntimeException("matrix != testmatrix2");
 
 		step3(matrix0);
 		if(! eq4x4(matrix0, testmatrix3))
-			throw new Panic("matrix != testmatrix3");
+			throw new RuntimeException("matrix != testmatrix3");
 
 		step4(matrix0);
 		if(! eq4x4(matrix0, testmatrix4))
-			throw new Panic("matrix != testmatrix4\n" );
+			throw new RuntimeException("matrix != testmatrix4\n" );
 
 		matrix0 = transpose(matrix0);
 		if(! eq4x4(matrix0, testmatrix5))
-			throw new Panic("matrix != testmatrix5");
+			throw new RuntimeException("matrix != testmatrix5");
 		return matrix0;
 	}
 	
@@ -395,17 +394,17 @@ public class MySalsa20
 	
 	public static String oroborousSalsa20(){
 		for(int i = 0; i <100; i++){
-			byte[] key    = Example.data(32);
-			byte[] nounce = Example.data(8);
+			byte[] key    = Support.exampleData(32);
+			byte[] nounce = Support.exampleData(8);
 		    int bc        = 0;
-			byte[] pt     = Example.data(0, 1000);
+			byte[] pt     = Support.exampleData( Support.exampleInt(0, 1000) );
 			byte[] ct     = new byte[pt.length];
 			byte[] pt2    = new byte[pt.length];
 			MySalsa20.crypto_stream_xor(ct, pt, pt.length, nounce, bc, key);
 			Salsa20.crypto_stream_xor(pt2, ct, ct.length, nounce, bc, key);
 			//public static int crypto_stream_xor(byte[] c, byte[] m, int mlen, byte[] n, int noffset, byte[] key)
 			if(!X.ctEquals(pt, pt2))
-				throw new Panic("they're not equal!!!");
+				throw new RuntimeException("they're not equal!!!");
 		}
 		
 		return "oroborous!";
@@ -448,13 +447,13 @@ public class MySalsa20
 //
 //private static int[][] add4x4(int[][]matrix0, int[][]matrix1){
 //  if((matrix0.length != 4) || ( matrix1.length != 4))
-//      throw new Panic("lengths are not equal to 4");
+//      throw new RuntimeException("lengths are not equal to 4");
 //
 //  int[] [] matrix = new int[4][4];
 //
 //  for(int i = 0; i < 4; i++){
 //      if((matrix0[i].length != 4) ||( matrix1[i].length != 4))
-//          throw new Panic("lengths are not equal to 4");
+//          throw new RuntimeException("lengths are not equal to 4");
 //
 //      for(int j = 0; j < 4; j++){
 //          matrix[i][j] = matrix0[i][j] + matrix1[i][j];
