@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author nesfield
+ * @author ada
  *
  */
 package cryptix;
