@@ -1,0 +1,166 @@
+package cryptix.alg.chacha;
+
+/**
+ * Salsa20 good test vectors,
+ * as submitted to ECRYPT Stream project.
+ * 
+ * These numbers are taken from the Stream project of ECRYPT.
+ * We really need a way to read them in properly, but the format
+ * looks clunky and annoying to parse.
+ * 
+ * @see https://www.cosic.esat.kuleuven.be/nessie/testvectors/ for explanation
+ * @see http://www.ecrypt.eu.org/stream/svn/viewcvs.cgi/ecrypt/trunk/submissions/salsa20/full/verified.test-vectors?logsort=rev&rev=210&view=markup
+ * @author iang
+ */
+public class Salsa20Vectors
+{
+    static int verbose = 2;
+    
+    /**
+     * 256 bit key set of vectors.
+     * Plaintext is always zeros.
+     */
+	public static final String[][] vectors256 =
+	{
+		{
+		                  "Set 1, vector#  0",
+              /* key = */ "80000000000000000000000000000000"+  // 256 bits
+                          "00000000000000000000000000000000",
+              /* IV = */  "0000000000000000",
+   /* stream[0..63]  = */ "E3BE8FDD8BECA2E3EA8EF9475B29A6E7"+
+                          "003951E1097A5C38D23B7A5FAD9F6844"+
+                          "B22C97559E2723C7CBBD3FE4FC8D9A07"+
+                          "44652A83E72A9C461876AF4D7EF1A117",
+/* stream[192..255]  = */ "57BE81F47B17D9AE7C4FF15429A73E10"+
+                          "ACF250ED3A90A93C711308A74C6216A9"+
+                          "ED84CD126DA7F28E8ABF8BB63517E1CA"+
+                          "98E712F4FB2E1A6AED9FDC73291FAA17",
+/* stream[256..319]  = */ "958211C4BA2EBD5838C635EDB81F513A"+
+                          "91A294E194F1C039AEEC657DCE40AA7E"+
+                          "7C0AF57CACEFA40C9F14B71A4B3456A6"+
+                          "3E162EC7D8D10B8FFB1810D71001B618",
+/* stream[448..511]  = */ "696AFCFD0CDDCC83C7E77F11A649D79A"+
+                          "CDC3354E9635FF137E929933A0BD6F53"+
+                          "77EFA105A3A4266B7C0D089D08F1E855"+
+                          "CC32B15B93784A36E56A76CC64BC8477",
+      /* xor-digest  = */ "50EC2485637DB19C6E795E9C73938280"+
+                          "6F6DB320FE3D0444D56707D7B456457F"+
+                          "3DB3E8D7065AF375A225A70951C8AB74"+
+                          "4EC4D595E85225F08E2BC03FE1C42567",
+        },
+        {
+            "Set 3, vector#  0:",
+            "000102030405060708090A0B0C0D0E0F"+
+            "101112131415161718191A1B1C1D1E1F",
+            "0000000000000000",
+            "B580F7671C76E5F7441AF87C146D6B51"+
+            "3910DC8B4146EF1B3211CF12AF4A4B49"+
+            "E5C874B3EF4F85E7D7ED539FFEBA73EB"+
+            "73E0CCA74FBD306D8AA716C7783E89AF",
+            "9B5B5406977968E7F472DE2924EFFD0E"+
+            "8EA74C954D23FCC21E4ED87BBA9E0F79"+
+            "D1477D1810368F02259F7F53966F91CE"+
+            "B50ECD3DA10363E7F08EEAB83A0EF71A",
+            "68E43AA40C5D5718E636D8E3B0AB3830"+
+            "D61698A12EB15BD9C923FF40A23E80BE"+
+            "026B7E1349265AD9C20A6C8A60256F4A"+
+            "CD1D7AD0DCBE1DFF3058ACD9E1B4C537",
+            "343ED5D011373AF376308D0B0DAB7806"+
+            "A4B4D3BF9B898181D546EFCF83D7464C"+
+            "FC56AE76F03F3711174DC67AC9363E69"+
+            "84F5A447BD25642A00754F1133BFD953",
+            "8C03E9237FEE95D5041C753C204D2B35"+
+            "764E4A53035A76F9EFBADD7E63E60B69"+
+            "BF23F7C5FD39B2249B0C628FB654D521"+
+            "4EB588371E5D2F34BF51396AF3ACB666",
+        },
+        {
+            "Set 5, vector#  0:",
+            "00000000000000000000000000000000"+
+            "00000000000000000000000000000000",
+            "8000000000000000",
+            "2ABA3DC45B4947007B14C851CD694456"+
+            "B303AD59A465662803006705673D6C3E"+
+            "29F1D3510DFC0405463C03414E0E07E3"+
+            "59F1F1816C68B2434A19D3EEE0464873",
+            "EFF0C107DCA563B5C0048EB488B40341"+
+            "ED34052790475CD204A947EB480F3D75"+
+            "3EF5347CEBB0A21F25B6CC8DE6B48906"+
+            "E604F554A6B01B23791F95C4A93A4717",
+            "E3393E1599863B52DE8C52CF26C752FB"+
+            "473B74A34D6D9FE31E9CA8DD6292522F"+
+            "13EB456C5BE9E5432C06E1BA3965D454"+
+            "48936BC98376BF903969F049347EA05D",
+            "FC4B2EF3B6B3815C99A437F16BDB06C5"+
+            "B948692786081D91C48CC7B072ABB901"+
+            "C0491CC6900F2FEA217BFFC70C43EDD6"+
+            "65E3E020B59AAA43868E9949FBB9AE22",
+            "FE40F57D1586D7664C2FCA5AB10BD7C7"+
+            "9DE3234836E76949F9DC01CBFABC6D6C"+
+            "42AB27DDC748B4DF7991092972AB4985"+
+            "CEC19B3E7C2C85D6E25A338DEC288282",
+        },
+        
+// Set 6 has different positions....        
+//        {
+//            "Set 6, vector#  0:",
+//            "0053A6F94C9FF24598EB3E91E4378ADD"+
+//            "3083D6297CCF2275C81B6EC11467BA0D",
+//            "0D74DB42A91077DE",
+//            "F5FAD53F79F9DF58C4AEA0D0ED9A9601"+
+//            "F278112CA7180D565B420A48019670EA"+
+//            "F24CE493A86263F677B46ACE1924773D"+
+//            "2BB25571E1AA8593758FC382B1280B71",
+//            "B70C50139C63332EF6E77AC54338A407"+
+//            "9B82BEC9F9A403DFEA821B83F7860791"+
+//            "650EF1B2489D0590B1DE772EEDA4E3BC"+
+//            "D60FA7CE9CD623D9D2FD5758B8653E70",
+//            "81582C65D7562B80AEC2F1A673A9D01C"+
+//            "9F892A23D4919F6AB47B9154E08E699B"+
+//            "4117D7C666477B60F8391481682F5D95"+
+//            "D96623DBC489D88DAA6956B9F0646B6E",
+//            "A13FFA1208F8BF50900886FAAB40FD10"+
+//            "E8CAA306E63DF39536A1564FB760B242"+
+//            "A9D6A4628CDC878762834E27A541DA2A"+
+//            "5E3B3445989C76F611E0FEC6D91ACACC",
+//            "C349B6A51A3EC9B712EAED3F90D8BCEE"+
+//            "69B7628645F251A996F55260C62EF31F"+
+//            "D6C6B0AEA94E136C9D984AD2DF3578F7"+
+//            "8E457527B03A0450580DD874F63B1AB9",
+//        },
+	};
+	
+
+	/**
+	 * This vector is not handled by the current code in use.
+	 */
+    public static final String[][] vectors128 =
+    {
+        {
+                         "Set 1, vector#  0",
+             /* key = */ "80000000000000000000000000000000",  // 128 bits
+             /* IV = */  "0000000000000000",
+   /* stream[0..63] = */ "4DFA5E481DA23EA09A31022050859936"+
+                         "DA52FCEE218005164F267CB65F5CFD7F"+
+                         "2B4F97E0FF16924A52DF269515110A07"+
+                         "F9E460BC65EF95DA58F740B7D1DBB0AA",
+/* stream[192..255] = */ "DA9C1581F429E0A00F7D67E23B730676"+
+                         "783B262E8EB43A25F55FB90B3E753AEF"+
+                         "8C6713EC66C51881111593CCB3E8CB8F"+
+                         "8DE124080501EEEB389C4BCB6977CF95",
+/* stream[256..319] = */ "7D5789631EB4554400E1E025935DFA7B"+
+                         "3E9039D61BDC58A8697D36815BF1985C"+
+                         "EFDF7AE112E5BB81E37ECF0616CE7147"+
+                         "FC08A93A367E08631F23C03B00A8DA2F",
+/* stream[448..511] = */ "B375703739DACED4DD4059FD71C3C47F"+
+                         "C2F9939670FAD4A46066ADCC6A564578"+
+                         "3308B90FFB72BE04A6B147CBE38CC0C3"+
+                         "B9267C296A92A7C69873F9F263BE9703",
+     /*  xor-digest = */ "F7A274D268316790A67EC058F45C0F2A"+
+                         "067A99FCDE6236C0CEF8E056349FE54C"+
+                         "5F13AC74D2539570FD34FEAB06C57205"+
+                         "3949B59585742181A5A760223AFA22D4",
+        },
+    };
+    
+}
