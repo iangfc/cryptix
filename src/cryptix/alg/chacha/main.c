@@ -1,0 +1,34 @@
+
+
+#include <stdio.h>
+#include "ecrypt-sync.h"
+
+static ECRYPT_ctx ctx;
+static ECRYPT_ctx *x = &ctx;
+static u32 ivbits = 0; // not used.
+static u32 kbits = 256;
+
+const u8 key256zero[] = {
+  0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
+  0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
+  0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
+  0x00,0x00,0x00,0x00, 0x00,0x00,0x00,0x00,
+};
+const u8 *k = key256zero;
+
+void show(ECRYPT_ctx *x)
+{
+	printf("context:\n");
+	for (int i = 0; i < 16; i++)
+		printf(" %d", x->input[i]);
+	printf("\n");
+}
+
+
+int main(int argc, char **argv)
+{
+	show(x);
+	ECRYPT_keysetup(x, k, kbits, ivbits);
+	show(x);
+}
+
