@@ -23,14 +23,14 @@
  * 
  * <ul><li>You are free to speak this code any way you wish or need.</ul>
  * <li>Attribution is nice but not necessary.</ul>
- * <li>Nothing is warrantied, promised, guaranteed -- use at your
+ * <li>Nothing is warranteed, promised, guaranteed -- use at your
  * own risk and your own liability.</li></ul>
  * 
  * <h2> Dependencies </h2>
  * <p>There are no patented contents, to our knowledge, and we would
  * remove those with a vengeance.  Patents are a blight on the Internet.</p>
  * 
- * <p>There is a small amount of code copied or inspired from BouncyCastle
+ * <p>There is some code copied or inspired from BouncyCastle
  * raw crypto library.
  * This is mostly the interface style and digests.
  * That code remains under their licence.</p>

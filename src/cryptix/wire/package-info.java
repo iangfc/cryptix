@@ -16,5 +16,6 @@
  * 
  * @author gary,mike,erwin,iang,jeroen,edwin,ada
  * @see {@link OuroborosPattern.pdf}
+ * @category free-speech public domain all you can eat! 
  */
 package cryptix.wire;

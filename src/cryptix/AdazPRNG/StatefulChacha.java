@@ -1,7 +1,5 @@
 package cryptix.AdazPRNG;
 
-import java.math.BigInteger;
-
 import cryptix.Support;
 import cryptix.X;
 import cryptix.alg.chacha.ChaCha;
@@ -349,21 +347,15 @@ public class StatefulChacha
 	
 	
 
-	public BigInteger probablePrime(int bitLength) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	public BigInteger probablePrime(int bitLength) {
+//	}
 	public int randomInt(int i, int j) {
-		// TODO Auto-generated method stub
-		return 0;
+        throw new RuntimeException("randomInt(i,j)");       
 	}
 	public int randomInt() {
-		// TODO Auto-generated method stub
-		return 0;
+        throw new RuntimeException("randomInt()");
 	}
 	public long randomLong() {
-		// TODO Auto-generated method stub
-		return 0;
+        throw new RuntimeException("randomLong()");
 	}
-
 }

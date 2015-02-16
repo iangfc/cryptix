@@ -44,11 +44,11 @@ public class TestREADME
 	/**
 	 * Open up the mixer and give it a handful of Collectors.
 	 * You do this once, in static private space, as one mixer
-	 * is good for all uses, and is actually better than separate
+	 * is good for all uses, and is considered better than separate
 	 * mixers.
 	 * 
 	 * This is private because it is an example only,
-	 * it isn't good enough, not even for goverment work.
+	 * it isn't good enough, not even for government work.
 	 */
 	private static void init()
 	{	

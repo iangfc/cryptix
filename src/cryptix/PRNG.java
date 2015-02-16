@@ -1,8 +1,6 @@
 package cryptix;
 
 import java.io.FileNotFoundException;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 
 import cryptix.AdazPRNG.CollectorInterface;
 import cryptix.AdazPRNG.CollectorJavaRandom;
@@ -23,10 +21,6 @@ import cryptix.AdazPRNG.StatefulChacha;
  *   <p>the one essential method of SecureRandom:</p>
  *   <code>    void nextBytes(byte[] buf)  </code>
  *   <p>It is thus compatible but not directly interchangeable (as final).</p>
- * </li><li>
- *   <p>the essential method for RSA:</p>
- *   <code>    BigInteger probablePrime(int bitLength)    </code>
- *   <p>which is needed to provide the RSA code with all it needs.</p>
  * </li><li>
  *   <p>for convenience, the most popular methods for user code:</p>
  *     <code>
@@ -59,27 +53,17 @@ import cryptix.AdazPRNG.StatefulChacha;
  * <ul><li>
  *     review,
  *   </li><li>
- *     replacement for BigInteger.probablePrime(SecureRandom) mode, and
- *   </li><li>
  *     Need to add a destroy method.
  * </li></ul>
  * @see SensorManager {@link https://developer.android.com/reference/android/hardware/SensorManager.html}
+ * @author iang
  */
 public class PRNG
     implements PsuedoRandomNumberGenerator
 {
     private PRNG() { }
 
-
-    /**
-     * <p>
-     * SecureRandom will block if the entropy for the system is not
-     * set up.  This could happen deep within Sun code.
-     * XXX: FreeBSD 4, see rndcontrol(8).
-     * XXX: FreeBSD 5, /dev/random no longer blocks AT ALL ...  Need to check.
-     * </p>
-     */
-    private static SecureRandom privSR;
+    private static final boolean ADD_OLD_SR = false;
 
     /**
      * Sort out some standard collectors,
@@ -87,13 +71,15 @@ public class PRNG
      */
     private static void init()
     {
-        if (privSR != null) return ;
-        privSR = getNewSecureRandom();   // only needed for probablePrime
+        if (initialised) return ;
 
         // check out the old SecureRandomHack?
         
-        addCollector( new CollectorJavaRandom() );
-//        X.info("added old crappy Java SecureRandom " + privSR);
+        
+        if (ADD_OLD_SR) {
+            addCollector( new CollectorJavaRandom() );
+            X.info("added old crappy Java SecureRandom");
+        }
         
         String osName = System.getProperty("os.name").toLowerCase();
         if (! osName.startsWith("win")) {
@@ -107,22 +93,11 @@ public class PRNG
         }
     }
     
-    private static SecureRandom getNewSecureRandom()
-    {
-        long tim = System.nanoTime();
-        X.info("Random.getSecureRandom: Init secureRandom ..." +
-                " this could take some time.");
-        // should this be syncronised?  Probably doesn't matter.
-        SecureRandom sr = new SecureRandom();
-        long delay = System.nanoTime() - tim;
-        X.info("Finished init securerandom -- " + delay + "ns.");
-        return sr;
-    }
-    
     private static Mixer mix = new Mixer();
     public static void   addCollector(CollectorInterface c)   { mix.addCollector(c); }
 
     private static int numCollectors = 0;
+    private static boolean initialised = false;
     private static ExpansionFunctionInterface goodSharedPRNG = null;
     
     /**
@@ -162,44 +137,10 @@ public class PRNG
     
     
 
-    
-//    /**
-//     *  @deprecated
-//     *  @return the old SecureRandom 
-//     */
-//    public static SecureRandom getInstance()        { init(); return privSR; }
-//    /** synonym of getInstance() for now
-//     * @deprecated
-//     */
-//    public static SecureRandom getSecureRandom()    { return getInstance(); }
-    
-    /**
-     * Prepare a slightly likely prime for RSA.
-     * This method only uses a certainty of 1 (as param to BigInteger)
-     * which is lowest probability.  The result
-     * needs additional testing by the user code.
-     * 
-     * @param bitLength
-     * @return
-     */
-    @Override
-    public BigInteger probablePrime(int bitLength)
-    {
-        X.warn("PRNG old SecureRandom used to generate BigInteger");
-        return new BigInteger(bitLength, 1, privSR);
-    }
-    
-    private static final boolean USE_ADAZ = true;
-
     @Override
     public void nextBytes(byte[] b)
     {
-        if (USE_ADAZ) {
-            goodSharedPRNG.nextBytes(b);
-            //log.warn("PRNG new ADAZ " + Hex.data2hex(b));
-        } else {
-            privSR.nextBytes(b);
-        }
+        goodSharedPRNG.nextBytes(b);
     }
 
     
@@ -257,8 +198,8 @@ public class PRNG
         nextBytes(buf);
         int random = 0;
         for (int i = 0; i < 4; i++) {
+            random <<= 8;           // first is a no-op, need only 3
             random |= buf[i] & BYTE_MASK;
-            random <<= 8;
         }
         
         return random;
@@ -271,8 +212,8 @@ public class PRNG
         nextBytes(buf);
         long random = 0;
         for (int i = 0; i < 8; i++) {
-            random |= buf[i] & BYTE_MASK;
             random <<= 8;
+            random |= buf[i] & BYTE_MASK;
         }
         
         return random;
